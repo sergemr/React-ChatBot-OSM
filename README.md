@@ -14,7 +14,7 @@ https://huggingface.co/lmstudio-ai/gemma-2b-it-GGUF/resolve/main/gemma-2b-it-q8_
 
 # Rag Architecture
 
-![alt text](https://miro.medium.com/v2/resize:fit:720/format:webp/1*mB_86ymkUvrej5D0FUNaZA.png)
+![alt text](https://docs.aws.amazon.com/images/sagemaker/latest/dg/images/jumpstart/jumpstart-fm-rag.jpg)
 
 ## Todo list
 
