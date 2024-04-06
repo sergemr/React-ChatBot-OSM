@@ -53,7 +53,7 @@ def llm_chatbot_response(request: None):
         tempmsg = [
             {"role": "system", "content": "You are a story writing assistant."},
             {
-                "role": "user",
+                "role": "userPhi",
                 "content": msg
             }
         ]

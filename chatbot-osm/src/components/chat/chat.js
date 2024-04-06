@@ -2,18 +2,11 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const Chat = () => {
-  const [conversation, setConversation] = useState([
-    {
-      role: "system",
-      content:
-        "Your name is Jarvis, you are my personal assistant, and will always introduce youself as such. You will refer to me as My Lord",
-    },
-    { role: "user", content: "Introduce yourself." },
-  ]);
+  const [conversation, setConversation] = useState([]);
 
   const [inputMessage, setInputMessage] = useState("");
 
-  const apiUrl = "http://localhost:1234/v1/chat/completions";
+  const apiUrl = "http://localhost:8080/chat-completion";
 
   const handleSendMessage = async () => {
     const newConversation = [

@@ -127,3 +127,4 @@ dist
 .pnp.*
 chatbot-osm-be/devenv/
 *.gguf
+.DS_Store
