@@ -12,6 +12,10 @@ https://huggingface.co/lmstudio-ai/gemma-2b-it-GGUF/resolve/main/gemma-2b-it-q8_
 
 - You are encouraged to use different LLMs and experiment with the results
 
+# Rag Architecture
+
+![alt text](https://miro.medium.com/v2/resize:fit:720/format:webp/1*mB_86ymkUvrej5D0FUNaZA.png)
+
 ## Todo list
 
 1. **Integrate a file upload function**
