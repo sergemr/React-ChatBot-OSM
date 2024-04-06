@@ -5,14 +5,28 @@ import CircularProgress from "@mui/material/CircularProgress";
 import axios from "axios";
 import { Divider } from "@mui/material";
 import SpeechSynthesis from "speech-synthesis";
-
+import SpeechSynthesisUtterance from "speech-synthesis";
 const Chat = () => {
   const [conversation, setConversation] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
+  const [isPlaying, setIsPlaying] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const apiUrl = "http://localhost:8080/chat-completion";
-
+  const handlePlayResponse = (message, stop = false) => {
+    if (stop) {
+      speechSynthesis.cancel(); // Stop any ongoing speech synthesis
+    } else {
+      const utterance = new SpeechSynthesisUtterance(message);
+      speechSynthesis.cancel(); // Stop any ongoing speech synthesis
+      speechSynthesis.speak(utterance);
+    }
+  };
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter" && !loading && inputMessage.trim() !== "") {
+      handleSendMessage();
+    }
+  };
   const handleSendMessage = async () => {
     const newConversation = [
       ...conversation,
@@ -67,7 +81,10 @@ const Chat = () => {
         }}
       >
         {conversation.map((message, index) => (
-          <div style={{ margin: "center", textAlign: "center", inset: "0" }}>
+          <div
+            key={`row-${index}`}
+            style={{ margin: "center", textAlign: "center", inset: "0" }}
+          >
             <div
               key={index}
               style={{
@@ -80,16 +97,49 @@ const Chat = () => {
                   message.role === "user" ? "#7e57c2" : "#00acc1",
               }}
             >
-              {message.content}
+              <div dangerouslySetInnerHTML={{ __html: message.content }} />
               <br />
-              <Button
-                style={{ display: message.role === "user" ? "none" : "block" }}
-                button
-                onClick={() => SpeechSynthesis(message.content)}
-              >
+              <div>
                 {" "}
-                Speak{" "}
-              </Button>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  style={{
+                    display:
+                      message.role === "user"
+                        ? "none"
+                        : isPlaying
+                        ? "none"
+                        : "block",
+                  }}
+                  button
+                  onClick={() => {
+                    setIsPlaying(true);
+                    SpeechSynthesis(message.content);
+                  }}
+                >
+                  Play{" "}
+                </Button>
+                <Button
+                  variant="contained"
+                  style={{
+                    display:
+                      message.role === "user"
+                        ? "none"
+                        : isPlaying
+                        ? "block"
+                        : "none",
+                  }}
+                  button
+                  onClick={() => {
+                    handlePlayResponse(null, true);
+                    setIsPlaying(false);
+                  }} // Pass null to indicate stopping playback
+                >
+                  {" "}
+                  Stop{" "}
+                </Button>
+              </div>
             </div>
           </div>
         ))}
@@ -107,6 +157,7 @@ const Chat = () => {
           InputProps={{
             style: { color: "rebeccapurple" },
           }}
+          onKeyDown={handleKeyPress}
         />
         <Button
           style={{ backgroundColor: "#ff4081", color: "#fff" }}

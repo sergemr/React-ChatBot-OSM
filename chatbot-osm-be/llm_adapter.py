@@ -7,6 +7,23 @@ llm = Llama(model_path="./phi-2.Q4_K_S.gguf",
             n_gpu_layers=2)
 
 
+def sanitize_response(response):
+    """
+    Sanitize the response by removing unwanted characters and formatting.
+
+    Args:
+        response (str): The response string to sanitize.
+
+    Returns:
+        str: The sanitized response.
+    """
+    # Remove newline characters, leading and trailing whitespace, and HTML tags
+    sanitized_response = response.replace("\n", "").strip().replace(
+        "<[/SYS>]", "").replace("<[/S", "").replace("<S>", "").replace("</S>", "").replace("<Inst>", "").replace("</Inst>", "")
+
+    return sanitized_response
+
+
 def llm_chatbot_response(request_data):
     print("Inside llm_chatbot_response@@@@@@")
     print("request_data")
@@ -37,7 +54,7 @@ def llm_chatbot_response(request_data):
 
         messages.insert(0, tempmsg)
 
-        max_tokens = 512  # Experiment with different values
+        max_tokens = 124  # Experiment with different values
         '''LLM Model Parameters'''
         '''TO-DO Experiment with different values for these parameters to see how they affect the chatbot's responses.'''
         par_temperature = -0.7
@@ -56,6 +73,15 @@ def llm_chatbot_response(request_data):
             max_tokens=max_tokens
         )
         print("Using llama-1 chat format@@@@@@22")
+        print(response)
+
+        content_to_sanitize = response['choices'][0]['message']['content']
+
+        # Sanitize the content
+        sanitized_content = sanitize_response(content_to_sanitize)
+
+        response['choices'][0]['message']['content'] = sanitized_content
+        print(sanitized_content)
         print(response)
         return response
     except Exception as e:
