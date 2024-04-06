@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 import axios from "axios";
 import { Divider } from "@mui/material";
+import SpeechSynthesis from "speech-synthesis";
 
 const Chat = () => {
   const [conversation, setConversation] = useState([]);
@@ -81,6 +82,14 @@ const Chat = () => {
             >
               {message.content}
               <br />
+              <Button
+                style={{ display: message.role === "user" ? "none" : "block" }}
+                button
+                onClick={() => SpeechSynthesis(message.content)}
+              >
+                {" "}
+                Speak{" "}
+              </Button>
             </div>
           </div>
         ))}
