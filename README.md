@@ -4,7 +4,7 @@ React-ChatBot Open Source Model
 
 - Security & Privacy are the first concerns, please keep in mind to use opensource, locally executable libraries and assets.
 
-- This application uses PHI, GEMMA & LLama-Instruct for the LLM models, they can be downloaded here (you can ask for the file in the office too):
+- This application uses PHI, GEMMA & LLama-Instruct for the LLM models, they can be downloaded here (you can ask for the file in the office during the CM Hackathon event):
 
 https://huggingface.co/TheBloke/CodeLlama-7B-Instruct-GGUF/resolve/main/codellama-7b-instruct.Q4_K_S.gguf
 
