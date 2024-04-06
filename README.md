@@ -2,7 +2,9 @@
 
 React-ChatBot Open Source Model
 
-- This application uses PHI, GEMMA & LLama-Instruct for the LLM models, they can be downloaded here :
+- Security & Privacy are the first concerns, please keep in mind to use opensource, locally executable libraries and assets.
+
+- This application uses PHI, GEMMA & LLama-Instruct for the LLM models, they can be downloaded here (you can ask for the file in the office too):
 
 https://huggingface.co/TheBloke/CodeLlama-7B-Instruct-GGUF/resolve/main/codellama-7b-instruct.Q4_K_S.gguf
 
@@ -58,7 +60,7 @@ https://huggingface.co/lmstudio-ai/gemma-2b-it-GGUF/resolve/main/gemma-2b-it-q8_
    - Extend your vector store to handle embedding of SharePoint pages along with other file types.
    - Implement a mechanism to periodically sync SharePoint content with your vector store.
 
-## Additional Considerations for Converting to a React Application
+## Additional Considerations
 
 1. **User Interface Design**:
 
@@ -82,7 +84,7 @@ https://huggingface.co/lmstudio-ai/gemma-2b-it-GGUF/resolve/main/gemma-2b-it-q8_
 5. **Responsive Design**:
 
    - Ensure that the application is responsive and works well across different devices and screen sizes.
-   - Use CSS frameworks like Bootstrap or Flexbox/Grid for responsive layout design.
+   - Use CSS frameworks like Bootstrap or Flexbox/Grid for responsive layout design. Material UI is already installed and implemented at some capacity.
 
 6. **Testing**:
 
@@ -92,7 +94,7 @@ https://huggingface.co/lmstudio-ai/gemma-2b-it-GGUF/resolve/main/gemma-2b-it-q8_
 7. **Deployment**:
 
    - Decide on a deployment strategy for your React application. Options include deploying to platforms like AWS, Heroku, Netlify, or using Docker containers.
-   - Set up CI/CD pipelines for automated testing and deployment.
+   - Suggest: Set up CI/CD pipelines for automated testing and deployment.
 
 8. **Accessibility**:
 
@@ -101,8 +103,7 @@ https://huggingface.co/lmstudio-ai/gemma-2b-it-GGUF/resolve/main/gemma-2b-it-q8_
 
 9. **Internationalization and Localization**:
 
-   - If your application will be used by users from different regions, consider implementing internationalization (i18n) and localization (l10n) support.
-   - Use libraries like react-i18next for handling translations and locale-specific content.
+   - The use of libraries like react-i18next for handling translations and locale-specific content are welcomed.
 
 10. **Documentation**:
     - Document the installation process, configuration options, and usage instructions for developers who want to contribute or use your application.
