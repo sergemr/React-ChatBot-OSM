@@ -126,6 +126,6 @@ dist
 .yarn/install-state.gz
 .pnp.*
 chatbot-osm-be/devenv/
-*.gguf
+#*.gguf
 .DS_Store
 /chatbot-osm-be/__pycache__

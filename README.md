@@ -2,6 +2,16 @@
 
 React-ChatBot Open Source Model
 
+- This application uses PHI, GEMMA & LLama-Instruct for the LLM models, they can be downloaded here :
+
+https://huggingface.co/TheBloke/CodeLlama-7B-Instruct-GGUF/resolve/main/codellama-7b-instruct.Q4_K_S.gguf
+
+https://huggingface.co/TheBloke/phi-2-GGUF/resolve/main/phi-2.Q4_K_S.gguf
+
+https://huggingface.co/lmstudio-ai/gemma-2b-it-GGUF/resolve/main/gemma-2b-it-q8_0.gguf
+
+- You are encouraged to use different LLMs and experiment with the results
+
 ## Todo list
 
 1. **Integrate a file upload function**
@@ -43,8 +53,6 @@ React-ChatBot Open Source Model
    - Explore SharePoint APIs to fetch content from SharePoint pages programmatically.
    - Extend your vector store to handle embedding of SharePoint pages along with other file types.
    - Implement a mechanism to periodically sync SharePoint content with your vector store.
-
-## Additional Considerations for Converting to a React Application
 
 ## Additional Considerations for Converting to a React Application
 

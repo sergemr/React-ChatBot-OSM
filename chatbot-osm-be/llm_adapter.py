@@ -1,5 +1,7 @@
 from llama_cpp import Llama
-llm = Llama(model_path="./phi-2.Q4_K_S.gguf",
+# llm = Llama(model_path="./llm-phi.gguf",
+# llm = Llama(model_path="./llm-codellama-instruct.gguf",
+llm = Llama(model_path="./llm-gemma.gguf",
             chat_format="llama-2",
             n_ctx=1024,  # The max sequence length to use - note that longer sequence lengths require much more resources
             n_threads=6,  # The number of CPU threads to use, tailor to your system and the resulting performance
