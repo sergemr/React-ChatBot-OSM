@@ -40,7 +40,7 @@ def llm_chatbot_response(request_data):
         max_tokens = 512  # Experiment with different values
         '''LLM Model Parameters'''
         '''TO-DO Experiment with different values for these parameters to see how they affect the chatbot's responses.'''
-        par_temperature = 0.7
+        par_temperature = -0.7
         par_top_p = 0.9
         par_top_k = 50
         par_frequency_penalty = 0.5
