@@ -1,9 +1,10 @@
 from llama_cpp import Llama
-# llm = Llama(model_path="./llm-phi.gguf",
-# llm = Llama(model_path="./llm-codellama-instruct.gguf",
-llm = Llama(model_path="./llm-gemma.gguf",
+import numpy as np
+# llm = Llama(model_path="./llm-phi.gguf", #Use llm-phi.gguf for the Phi model
+# llm = Llama(model_path="./llm-codellama-instruct.gguf", #Use llm-codellama-instruct.gguf for the CodeLlama model
+llm = Llama(model_path="./llm-gemma.gguf",  # Use llm-gemma.gguf for the Gemma model
             chat_format="llama-2",
-            n_ctx=1024,  # The max sequence length to use - note that longer sequence lengths require much more resources
+            n_ctx=124,  # The max sequence length to use - note that longer sequence lengths require much more resources
             n_threads=6,  # The number of CPU threads to use, tailor to your system and the resulting performance
             # The number of layers to offload to GPU, if you have GPU acceleration available)
             n_gpu_layers=2)
@@ -27,32 +28,18 @@ def sanitize_response(response):
 
 
 def llm_chatbot_response(request_data):
-    print("Inside llm_chatbot_response@@@@@@")
-    print("request_data")
-    print(request_data)
-
     '''Chatbot response function using Llama model'''
 
     messages = request_data.get('messages', [])
     max_tokens0 = request_data.get('max_tokens')
     temperature = request_data.get('temperature')
-    print("llm_chatbot_response messages")
-    print(messages)
-    print("llm_chatbot_response max_tokens0")
-    print(max_tokens0)
-    print("llm_chatbot_response temperature")
-    print(temperature)
 
     try:
 
-        print("Inside llm_chatbot_response try@@@@@@")
-
         tempmsg = {
             "role": "system",
-            "content": 'You are an expert and my personal computing assistant.'
+            "content": 'Given only the context provided.'
         }
-
-        print("Using llama-1 chat formatDATA")
 
         messages.insert(0, tempmsg)
 
@@ -66,16 +53,12 @@ def llm_chatbot_response(request_data):
         par_presence_of_special_tokens = True
         par_context_window_size = 100
         par_beam_size = 3
-        print("Using llama-1 chat messages@@@@@@")
-        print(messages)
 
         response = llm.create_chat_completion(
             messages=messages,
             temperature=temperature,
             max_tokens=max_tokens
         )
-        print("Using llama-1 chat format@@@@@@22")
-        print(response)
 
         content_to_sanitize = response['choices'][0]['message']['content']
 
@@ -83,8 +66,48 @@ def llm_chatbot_response(request_data):
         sanitized_content = sanitize_response(content_to_sanitize)
 
         response['choices'][0]['message']['content'] = sanitized_content
-        print(sanitized_content)
-        print(response)
+
         return response
+    except Exception as e:
+        return {'error': str(e)}, 500
+
+
+def llm_chatbot_response_vs(request_data, vector_store):
+    # Get request data
+    messages = request_data.get('messages', [])
+    temperature = request_data.get('temperature')
+    max_tokens = 200
+    try:
+        # Extract embeddings from the vector store
+        embeddings = [vector_store.get(
+            f'embedding_{i}', None) for i in range(len(messages))]
+        # Filter out None values
+        embeddings = [emb for emb in embeddings if emb is not None]
+        print("messages")
+        print(messages)
+        # Construct combined input with messages and embeddings
+        combined_input = []
+        # Add embeddings to the combined input
+
+        combined_input += [
+            {'role':  message['role'], 'content': message['content']} for message in messages]
+        combined_input += [{'role': 'context', 'content': emb}
+                           for emb in embeddings]
+        # Print combined input for debugging
+        print("Combined input:")
+        print(combined_input)
+
+        # Use LLama model to generate chatbot response
+        response = llm.create_chat_completion(
+            messages=combined_input, temperature=temperature, max_tokens=max_tokens
+        )
+
+        # Extract and sanitize chatbot response
+        sanitized_content = sanitize_response(
+            response['choices'][0]['message']['content'])
+
+        # Return sanitized response
+        return {'message': sanitized_content}, 200
+
     except Exception as e:
         return {'error': str(e)}, 500

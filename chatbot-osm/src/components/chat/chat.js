@@ -49,6 +49,8 @@ const Chat = () => {
         ...newConversation,
         { role: "assistant", content: botReply },
       ]);
+
+      //SpeechSynthesis(response.data.choices[0].message.content);
     } catch (error) {
       console.error("Error sending message:", error);
     } finally {

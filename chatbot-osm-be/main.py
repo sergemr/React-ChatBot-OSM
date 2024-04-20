@@ -1,14 +1,27 @@
+from flask_cors import CORS  # Import the CORS extension
+from llm_adapter import llm_chatbot_response, llm_chatbot_response_vs
 from llama_cpp import Llama
 from flask import Flask, request, jsonify
-# import llm adapter with response function
-from llm_adapter import llm_chatbot_response
+import spacy
+# from llm_test import test_get_embeddings
+from embedings_adapter import create_embedings
+import numpy as np
+# Import your chosen library (e.g., Gensim)
+# Load a spaCy model (replace with your preferred model)
+nlp = spacy.load("en_core_web_md")
 
-from flask_cors import CORS  # Import the CORS extension
+
+# import llm adapter with response function
+
+# Assuming you have a pre-trained word2vec model loaded
+# model = Word2Vec.load("word2vec.model")
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 # Initialize Llama model
 print("Using llama-1 chat format@@@@@@")
+# In-memory vector store
+vector_store = {}
 
 
 # Chat Completion API
@@ -25,7 +38,7 @@ def hello_world():
         <p>This API provides an interface for interacting with a chatbot based on the LLM (Large Language Model) architecture. The <code>llm_chatbot_response_api</code> function processes incoming POST requests containing chat messages and returns the chatbot's response.</p>
         <h2>Endpoint: chat-completion</h2>
         <h2>Function: llm_chatbot_response_api</h2>
-        
+
         <p>
             <strong>Purpose:</strong> This function generates a response from the chatbot based on the provided conversation context.
             <br>
@@ -43,7 +56,7 @@ def hello_world():
             </ul>
             <strong>Returns:</strong> JSON object containing the chatbot's response.
         </p>
-        
+
     <h1>React-ChatBot-OSM</h1>
 
     <p>React-ChatBot Open Source Model</p>
@@ -219,10 +232,52 @@ def llm_chatbot_response_api():
         print("Using llama adapter API")
 
         response = llm_chatbot_response(data)
+        response2 = llm_chatbot_response_vs(data, vector_store)
+
+        print(response2)
      #   print(response)
         return response
     except Exception as e:
         return {'error': str(e)}, 500
+
+
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    if 'files[]' not in request.files:
+        return {'error': 'No file part'}, 400
+
+    files = request.files.getlist('files[]')
+    print("upload files")
+    create_embedings(files)
+
+    # Save embeddings to vector store
+    # print_to_vector_store(embeddings)
+    # save_to_vector_store(embeddings)
+
+    return {'message': 'Upload successful'}, 200
+
+
+def print_to_vector_store(embeddings):
+    # Assuming logic here to save embeddings to a vector store
+    # For demonstration purposes, we'll just print the embeddings
+    for embedding in embeddings:
+        # Assuming "jedi" is the word to find
+        word = "coffee"
+        # Calculate dot product for similarity
+        similarity = nlp(word).vector.dot(embedding)
+        # You can adjust the threshold to determine how "similar" is considered a match
+        if similarity > 0.7:  # Replace 0.7 with your desired threshold
+            print(f"Word '{word}' found with similarity: {similarity:.2f}")
+        else:
+            print(f"Word '{word}' not found in this embedding")
+        for embedding in embeddings:
+            print(embedding)
+
+
+def save_to_vector_store(embeddings):
+    # Save embeddings to vector store
+    for idx, embedding in enumerate(embeddings):
+        vector_store[f'embedding_{idx}'] = embedding
 
 
 if __name__ == '__main__':
